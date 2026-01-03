@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -12,6 +13,7 @@ import Onboarding from "./pages/Onboarding";
 import Generate from "./pages/Generate";
 import Dashboard from "./pages/Dashboard";
 import PathView from "./pages/PathView";
+import LearningStep from "./pages/LearningStep"; // ✅ ADD THIS
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,13 +26,59 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* PUBLIC */}
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
-            <Route path="/generate" element={<ProtectedRoute><Generate /></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/path/:pathId" element={<ProtectedRoute><PathView /></ProtectedRoute>} />
+
+            {/* PROTECTED */}
+            <Route
+              path="/onboarding"
+              element={
+                <ProtectedRoute>
+                  <Onboarding />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/generate"
+              element={
+                <ProtectedRoute>
+                  <Generate />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/path/:pathId"
+              element={
+                <ProtectedRoute>
+                  <PathView />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* 🔥 STEP PAGE (FIXED) */}
+            <Route
+              path="/path/:pathId/step/:stepId"
+              element={
+                <ProtectedRoute>
+                  <LearningStep />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* FALLBACK */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
